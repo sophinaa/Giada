@@ -11,6 +11,7 @@ const homePhotoWrap = document.querySelector(".home-photo-wrap");
 const litOverlay = document.getElementById("lit-overlay");
 const unlitOverlay = document.getElementById("unlit-overlay");
 const enableHomeBlowBtn = document.getElementById("enable-home-blow-btn");
+const disableHomeBlowBtn = document.getElementById("disable-home-blow-btn");
 const homeBlowStatus = document.getElementById("home-blow-status");
 
 const CAKE_IMAGE_SRC = "cake.jpeg";
@@ -383,6 +384,7 @@ if (photoCakeWrap && photoFlame) {
 let homeAudioContext;
 let homeAnalyser;
 let homeAudioData;
+let homeMicStream;
 let homeMonitoringFrameId;
 let homeBaseline = 0;
 let homeLastBlowAt = 0;
@@ -461,13 +463,15 @@ async function enableHomeBlow() {
   }
 
   try {
-    const stream = await navigator.mediaDevices.getUserMedia({
-      audio: {
-        echoCancellation: false,
-        noiseSuppression: false,
-        autoGainControl: false
-      }
-    });
+    if (!homeMicStream) {
+      homeMicStream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          echoCancellation: false,
+          noiseSuppression: false,
+          autoGainControl: false
+        }
+      });
+    }
 
     if (!homeAudioContext) {
       homeAudioContext = new AudioContext();
@@ -477,7 +481,7 @@ async function enableHomeBlow() {
       homeAudioData = new Uint8Array(homeAnalyser.fftSize);
     }
 
-    const source = homeAudioContext.createMediaStreamSource(stream);
+    const source = homeAudioContext.createMediaStreamSource(homeMicStream);
     source.connect(homeAnalyser);
 
     setHomeBlownState(false);
@@ -495,6 +499,30 @@ async function enableHomeBlow() {
   }
 }
 
+function disableHomeBlow() {
+  cancelAnimationFrame(homeMonitoringFrameId);
+
+  if (homeMicStream) {
+    homeMicStream.getTracks().forEach((track) => track.stop());
+    homeMicStream = null;
+  }
+
+  if (homeAudioContext && homeAudioContext.state !== "closed") {
+    homeAudioContext.close();
+    homeAudioContext = null;
+    homeAnalyser = null;
+    homeAudioData = null;
+  }
+
+  if (homeBlowStatus) {
+    homeBlowStatus.textContent = "Mic off";
+  }
+}
+
 if (enableHomeBlowBtn) {
   enableHomeBlowBtn.addEventListener("click", enableHomeBlow);
+}
+
+if (disableHomeBlowBtn) {
+  disableHomeBlowBtn.addEventListener("click", disableHomeBlow);
 }

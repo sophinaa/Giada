@@ -128,8 +128,22 @@ body {
   font: inherit;
   font-weight: 800;
   color: #ffffff;
-  background: linear-gradient(120deg, #52b788, #2d6a4f);
+  background: #3f8f68;
   cursor: pointer;
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+}
+
+.home-nav-btn:hover {
+  background: #367c5a;
+}
+
+.home-nav-btn + .home-nav-btn {
+  margin-top: 0.45rem;
+}
+
+.home-nav-btn-muted {
+  background: #3f8f68;
+  margin-top: 0.35rem;
 }
 
 .home-nav-status {
