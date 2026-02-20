@@ -22,7 +22,9 @@
           <img class="album-slide" src="baby2.jpeg" alt="Relics photo 3" />
           <img class="album-slide" src="baby3.jpeg" alt="Relics photo 4" />
           <img class="album-slide" src="baby4.jpeg" alt="Relics photo 5" />
-          <p id="album-counter" class="album-counter">1/5</p>
+          <img class="album-slide relics-slide-6" src="baby5.JPG" alt="Relics photo 6" />
+          <img class="album-slide" src="baby6.JPG" alt="Relics photo 7" />
+          <p id="album-counter" class="album-counter">1/7</p>
           <button id="prev-slide" class="album-arrow album-arrow-left" type="button" aria-label="Previous slide">
             &#8249;
           </button>
@@ -36,6 +38,8 @@
           <button class="album-dot" type="button" aria-label="Go to slide 3"></button>
           <button class="album-dot" type="button" aria-label="Go to slide 4"></button>
           <button class="album-dot" type="button" aria-label="Go to slide 5"></button>
+          <button class="album-dot" type="button" aria-label="Go to slide 6"></button>
+          <button class="album-dot" type="button" aria-label="Go to slide 7"></button>
         </div>
       </section>
     </main>
@@ -53,7 +57,7 @@
         current = (index + slides.length) % slides.length;
         slides[current].classList.add("is-active");
         dots[current].classList.add("is-active");
-        counter.textContent = `${current + 1}/5`;
+        counter.textContent = `${current + 1}/7`;
       }
 
       prev.addEventListener("click", () => showSlide(current - 1));

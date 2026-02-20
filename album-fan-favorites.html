@@ -15,11 +15,12 @@
       <section class="memory-sheet">
         <p class="memory-kicker">Photo Album</p>
         <h1>Fan Favorites</h1>
-        <p class="memory-intro">The only 2 picks that could make it.</p>
+        <p class="memory-intro">The only 3 picks that could make it.</p>
         <div class="album-slider" aria-label="Fan favorites slideshow">
           <img class="album-slide is-active" src="fanfaves.jpeg" alt="Fan favorite photo 1" />
           <img class="album-slide" src="fanafves1.jpeg" alt="Fan favorite photo 2" />
-          <p id="album-counter" class="album-counter">1/2</p>
+          <img class="album-slide" src="IMG_0216.JPG" alt="Fan favorite photo 3" />
+          <p id="album-counter" class="album-counter">1/3</p>
           <button id="prev-slide" class="album-arrow album-arrow-left" type="button" aria-label="Previous slide">
             &#8249;
           </button>
@@ -30,6 +31,7 @@
         <div class="album-dots" aria-label="Slide indicators">
           <button class="album-dot is-active" type="button" aria-label="Go to slide 1"></button>
           <button class="album-dot" type="button" aria-label="Go to slide 2"></button>
+          <button class="album-dot" type="button" aria-label="Go to slide 3"></button>
         </div>
       </section>
     </main>
@@ -47,7 +49,7 @@
         current = (index + slides.length) % slides.length;
         slides[current].classList.add("is-active");
         dots[current].classList.add("is-active");
-        counter.textContent = `${current + 1}/2`;
+        counter.textContent = `${current + 1}/3`;
       }
 
       prev.addEventListener("click", () => showSlide(current - 1));

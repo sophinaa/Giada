@@ -582,6 +582,10 @@ h1 span {
   max-width: 56ch;
 }
 
+.memory-intro-full {
+  max-width: none;
+}
+
 .memory-photo {
   width: 100%;
   height: auto;
@@ -589,6 +593,16 @@ h1 span {
   border-radius: 12px;
   border: 1px solid rgba(45, 106, 79, 0.2);
   display: block;
+}
+
+.memory-photo-thin {
+  width: 72%;
+  height: 190px;
+  object-fit: cover;
+  object-position: center 22%;
+  margin-top: 0.2rem;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .album-grid {
@@ -672,6 +686,28 @@ h1 span {
 
 .album-slider-graduation .graduation-slide-3 {
   object-position: center 8%;
+}
+
+.revist-slide-5 {
+  object-fit: contain;
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.revist-slide-2 {
+  object-position: center 34%;
+}
+
+.revist-slide-4 {
+  object-fit: contain;
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.revist-slide-6 {
+  object-position: center 28%;
+}
+
+.relics-slide-6 {
+  object-position: center 28%;
 }
 
 .album-counter {
