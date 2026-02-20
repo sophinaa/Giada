@@ -1,5 +1,5 @@
 const canvas = document.getElementById("confetti-canvas");
-const ctx = canvas.getContext("2d");
+const ctx = canvas ? canvas.getContext("2d") : null;
 const celebrateBtn = document.getElementById("celebrate-btn");
 const photoCakeWrap = document.getElementById("photo-cake-wrap");
 const cakePhoto = document.getElementById("cake-photo");
@@ -30,6 +30,10 @@ function getFlames() {
 }
 
 function addRandomCandles(count = 5) {
+  if (!photoCakeWrap) {
+    return;
+  }
+
   const usedX = [50];
 
   for (let i = 0; i < count; i += 1) {
@@ -63,6 +67,10 @@ function addRandomCandles(count = 5) {
 }
 
 function addLowerRowCandles(count = 4) {
+  if (!photoCakeWrap) {
+    return;
+  }
+
   const usedX = [];
 
   for (let i = 0; i < count; i += 1) {
@@ -142,12 +150,16 @@ function nudgeLeftMostCandleDown(offset = 1.8) {
 
 function relightCandle() {
   getFlames().forEach((flame) => flame.classList.remove("out"));
-  micStatus.textContent = "Candles relit. Blow toward your mic.";
+  if (micStatus) {
+    micStatus.textContent = "Candles relit. Blow toward your mic.";
+  }
 }
 
 function blowOutCandle() {
   getFlames().forEach((flame) => flame.classList.add("out"));
-  micStatus.textContent = "Wish made. Candles are out.";
+  if (micStatus) {
+    micStatus.textContent = "Wish made. Candles are out.";
+  }
   celebrate();
 }
 
@@ -156,11 +168,28 @@ function hasLitCandle() {
 }
 
 function resizeCanvas() {
+  if (!canvas) {
+    return;
+  }
+
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 }
 
 function createParticle() {
+  if (!canvas) {
+    return {
+      x: 0,
+      y: 0,
+      size: 0,
+      speedY: 0,
+      speedX: 0,
+      rotation: 0,
+      spin: 0,
+      color: "#000000"
+    };
+  }
+
   return {
     x: Math.random() * canvas.width,
     y: -20,
@@ -180,6 +209,10 @@ function burst(count = 160) {
 }
 
 function draw() {
+  if (!ctx || !canvas) {
+    return;
+  }
+
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   particles.forEach((p) => {
@@ -203,6 +236,10 @@ function draw() {
 }
 
 function celebrate() {
+  if (!ctx || !canvas) {
+    return;
+  }
+
   cancelAnimationFrame(animationFrameId);
   burst();
   draw();
@@ -251,7 +288,9 @@ function monitorMic() {
 
 async function enableMicMonitoring() {
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-    micStatus.textContent = "Mic input not supported in this browser.";
+    if (micStatus) {
+      micStatus.textContent = "Mic input not supported in this browser.";
+    }
     return;
   }
 
@@ -261,7 +300,9 @@ async function enableMicMonitoring() {
     location.hostname === "::1";
 
   if (!window.isSecureContext && !isLocalHost) {
-    micStatus.textContent = "Mic needs HTTPS (or localhost) to work.";
+    if (micStatus) {
+      micStatus.textContent = "Mic needs HTTPS (or localhost) to work.";
+    }
     return;
   }
 
@@ -289,24 +330,47 @@ async function enableMicMonitoring() {
     cancelAnimationFrame(monitoringFrameId);
     blowBaseline = 0;
     monitorMic();
-    micStatus.textContent = "Mic active. Blow toward your computer to extinguish.";
+    if (micStatus) {
+      micStatus.textContent = "Mic active. Blow toward your computer to extinguish.";
+    }
   } catch (error) {
-    micStatus.textContent = "Mic permission denied or unavailable.";
+    if (micStatus) {
+      micStatus.textContent = "Mic permission denied or unavailable.";
+    }
   }
 }
 
-window.addEventListener("resize", resizeCanvas);
-celebrateBtn.addEventListener("click", celebrate);
-enableMicBtn.addEventListener("click", enableMicMonitoring);
-relightBtn.addEventListener("click", relightCandle);
-cakePhoto.addEventListener("error", () => {
-  micStatus.textContent = `Missing ${CAKE_IMAGE_SRC} in project root.`;
-});
+if (canvas) {
+  window.addEventListener("resize", resizeCanvas);
+  resizeCanvas();
+  celebrate();
+}
 
-cakePhoto.src = CAKE_IMAGE_SRC;
-addRandomCandles(5);
-addLowerRowCandles(4);
-removeLeftMostBottomCandle();
-nudgeLeftMostCandleDown();
-resizeCanvas();
-celebrate();
+if (celebrateBtn) {
+  celebrateBtn.addEventListener("click", celebrate);
+}
+
+if (enableMicBtn) {
+  enableMicBtn.addEventListener("click", enableMicMonitoring);
+}
+
+if (relightBtn) {
+  relightBtn.addEventListener("click", relightCandle);
+}
+
+if (cakePhoto) {
+  cakePhoto.addEventListener("error", () => {
+    if (micStatus) {
+      micStatus.textContent = `Missing ${CAKE_IMAGE_SRC} in project root.`;
+    }
+  });
+
+  cakePhoto.src = CAKE_IMAGE_SRC;
+}
+
+if (photoCakeWrap && photoFlame) {
+  addRandomCandles(5);
+  addLowerRowCandles(4);
+  removeLeftMostBottomCandle();
+  nudgeLeftMostCandleDown();
+}
