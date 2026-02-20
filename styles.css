@@ -155,8 +155,12 @@ h1 span {
   animation-delay: 300ms;
 }
 
+.cake-section.reveal {
+  animation-delay: 420ms;
+}
+
 .toast.reveal {
-  animation-delay: 520ms;
+  animation-delay: 560ms;
 }
 
 @keyframes rise {
@@ -173,5 +177,168 @@ h1 span {
 
   .container {
     padding-bottom: 3rem;
+  }
+}
+
+.cake-section {
+  margin-top: 2.5rem;
+  text-align: center;
+}
+
+.cake-section h2 {
+  margin: 0;
+  font-family: "Abril Fatface", serif;
+  font-weight: 400;
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
+}
+
+.cake-help {
+  margin: 0.5rem auto 1.1rem;
+  max-width: 50ch;
+}
+
+.cake-stage {
+  width: min(720px, 100%);
+  margin: 0 auto;
+  padding: 1rem 1rem 1.8rem;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.62);
+  border: 1px solid rgba(45, 106, 79, 0.22);
+  box-shadow: var(--shadow);
+}
+
+.candles {
+  width: min(540px, 92%);
+  margin: 0 auto 0.1rem;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.34rem;
+}
+
+.candle {
+  width: 12px;
+  height: 40px;
+  border-radius: 5px;
+  position: relative;
+  background: repeating-linear-gradient(
+    45deg,
+    #d8f3dc 0,
+    #d8f3dc 4px,
+    #95d5b2 4px,
+    #95d5b2 8px
+  );
+  box-shadow: inset 0 -10px 0 rgba(0, 0, 0, 0.08);
+}
+
+.candle::before {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  width: 2px;
+  height: 8px;
+  transform: translateX(-50%);
+  background: #4b3f2f;
+}
+
+.flame {
+  position: absolute;
+  left: 50%;
+  top: -17px;
+  width: 10px;
+  height: 14px;
+  transform: translateX(-50%);
+  border-radius: 50% 50% 50% 50%;
+  background: radial-gradient(circle at 45% 42%, #fff7cc 0 24%, #ffd166 44%, #f77f00 100%);
+  animation: flicker 170ms infinite alternate;
+  box-shadow: 0 0 14px rgba(247, 127, 0, 0.75);
+}
+
+.candle.out .flame {
+  opacity: 0;
+  transform: translateX(-50%) translateY(2px) scale(0.35);
+  animation: none;
+}
+
+.cake {
+  width: min(560px, 94%);
+  height: 140px;
+  margin: 0 auto;
+  border-radius: 18px 18px 26px 26px;
+  background: linear-gradient(180deg, #f1faee 0, #d8f3dc 35%, #b7e4c7 100%);
+  border: 2px solid rgba(45, 106, 79, 0.24);
+  position: relative;
+  overflow: hidden;
+}
+
+.cake::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    -22deg,
+    transparent 0 19px,
+    rgba(82, 183, 136, 0.18) 19px 30px
+  );
+}
+
+.cake-base {
+  width: min(620px, 98%);
+  height: 20px;
+  margin: -4px auto 0;
+  border-radius: 999px;
+  background: #2d6a4f;
+  opacity: 0.5;
+}
+
+.cake-controls {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.cake-controls button {
+  border: 0;
+  background: linear-gradient(120deg, #74c69d, #2d6a4f);
+  color: #fff;
+  font: inherit;
+  font-weight: 700;
+  padding: 0.72rem 1.08rem;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.mic-status {
+  margin: 0.8rem 0 0;
+  font-size: 0.95rem;
+  opacity: 0.84;
+}
+
+@keyframes flicker {
+  from {
+    transform: translateX(-50%) rotate(-1deg) scale(1);
+  }
+  to {
+    transform: translateX(-50%) rotate(2deg) scale(1.05);
+  }
+}
+
+@media (max-width: 860px) {
+  .cake-stage {
+    padding: 0.8rem 0.6rem 1.4rem;
+  }
+
+  .candle {
+    width: 10px;
+    height: 34px;
+  }
+
+  .flame {
+    width: 8px;
+    height: 12px;
+    top: -14px;
   }
 }
