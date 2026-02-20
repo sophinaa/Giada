@@ -19,16 +19,27 @@
       <section class="landing-content">
         <div class="home-photo-wrap">
           <img class="home-photo" src="Home.jpeg" alt="Giada home photo" />
-          <img class="candle-overlay" src="lit.jpeg" alt="Lit candle layer" />
+          <img id="lit-overlay" class="candle-overlay" src="lit.jpeg" alt="Lit candle layer" />
+          <img
+            id="unlit-overlay"
+            class="candle-overlay candle-overlay-unlit"
+            src="unlit.jpeg"
+            alt="Unlit candle layer"
+          />
         </div>
       </section>
 
       <aside class="home-nav" aria-label="Site pages">
         <p class="home-nav-title">Giada's Pages</p>
+        <button id="enable-home-blow-btn" class="home-nav-btn" type="button">
+          Enable Blow
+        </button>
+        <p id="home-blow-status" class="home-nav-status">Mic off</p>
         <a class="home-nav-link" href="celebration.html">Celebration</a>
         <a class="home-nav-link" href="wishes.html">Wishes</a>
         <a class="home-nav-link" href="memories.html">Memories</a>
       </aside>
     </main>
+    <script src="script.js"></script>
   </body>
 </html>

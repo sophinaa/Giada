@@ -74,6 +74,18 @@ body {
   pointer-events: none;
 }
 
+.candle-overlay-unlit {
+  opacity: 0;
+}
+
+.home-photo-wrap.candle-blown #lit-overlay {
+  opacity: 0;
+}
+
+.home-photo-wrap.candle-blown #unlit-overlay {
+  opacity: 1;
+}
+
 .home-nav {
   width: min(300px, 88vw);
   position: fixed;
@@ -106,6 +118,24 @@ body {
 
 .home-nav-link:hover {
   background: rgba(45, 106, 79, 0.13);
+}
+
+.home-nav-btn {
+  width: 100%;
+  border: 0;
+  border-radius: 10px;
+  padding: 0.65rem 0.8rem;
+  font: inherit;
+  font-weight: 800;
+  color: #ffffff;
+  background: linear-gradient(120deg, #52b788, #2d6a4f);
+  cursor: pointer;
+}
+
+.home-nav-status {
+  margin: 0.5rem 0 0.7rem;
+  font-size: 0.9rem;
+  opacity: 0.8;
 }
 
 .page-link-wrap {

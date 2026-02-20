@@ -7,6 +7,11 @@ const photoFlame = document.getElementById("photo-flame");
 const enableMicBtn = document.getElementById("enable-mic-btn");
 const relightBtn = document.getElementById("relight-btn");
 const micStatus = document.getElementById("mic-status");
+const homePhotoWrap = document.querySelector(".home-photo-wrap");
+const litOverlay = document.getElementById("lit-overlay");
+const unlitOverlay = document.getElementById("unlit-overlay");
+const enableHomeBlowBtn = document.getElementById("enable-home-blow-btn");
+const homeBlowStatus = document.getElementById("home-blow-status");
 
 const CAKE_IMAGE_SRC = "cake.jpeg";
 
@@ -373,4 +378,123 @@ if (photoCakeWrap && photoFlame) {
   addLowerRowCandles(4);
   removeLeftMostBottomCandle();
   nudgeLeftMostCandleDown();
+}
+
+let homeAudioContext;
+let homeAnalyser;
+let homeAudioData;
+let homeMonitoringFrameId;
+let homeBaseline = 0;
+let homeLastBlowAt = 0;
+
+function setHomeBlownState(isBlown) {
+  if (!homePhotoWrap || !litOverlay || !unlitOverlay) {
+    return;
+  }
+
+  homePhotoWrap.classList.toggle("candle-blown", isBlown);
+}
+
+function getHomeAudioLevels() {
+  homeAnalyser.getByteTimeDomainData(homeAudioData);
+  let sumSquares = 0;
+  let peak = 0;
+
+  for (let i = 0; i < homeAudioData.length; i += 1) {
+    const normalized = (homeAudioData[i] - 128) / 128;
+    sumSquares += normalized * normalized;
+    const magnitude = Math.abs(normalized);
+    if (magnitude > peak) {
+      peak = magnitude;
+    }
+  }
+
+  return {
+    rms: Math.sqrt(sumSquares / homeAudioData.length),
+    peak
+  };
+}
+
+function monitorHomeBlow() {
+  if (!homeAnalyser || !homePhotoWrap || homePhotoWrap.classList.contains("candle-blown")) {
+    return;
+  }
+
+  const { rms, peak } = getHomeAudioLevels();
+  homeBaseline = homeBaseline === 0 ? rms : homeBaseline * 0.9 + rms * 0.1;
+
+  const now = Date.now();
+  const isStrongEnough = rms > 0.045 || peak > 0.2;
+  const isBurstAboveNoise = rms > homeBaseline * 1.4;
+  const cooldownFinished = now - homeLastBlowAt > 1200;
+
+  if (isStrongEnough && isBurstAboveNoise && cooldownFinished) {
+    homeLastBlowAt = now;
+    setHomeBlownState(true);
+    if (homeBlowStatus) {
+      homeBlowStatus.textContent = "Blown out";
+    }
+    return;
+  }
+
+  homeMonitoringFrameId = requestAnimationFrame(monitorHomeBlow);
+}
+
+async function enableHomeBlow() {
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    if (homeBlowStatus) {
+      homeBlowStatus.textContent = "Mic unsupported";
+    }
+    return;
+  }
+
+  const isLocalHost =
+    location.hostname === "localhost" ||
+    location.hostname === "127.0.0.1" ||
+    location.hostname === "::1";
+
+  if (!window.isSecureContext && !isLocalHost) {
+    if (homeBlowStatus) {
+      homeBlowStatus.textContent = "Need HTTPS/localhost";
+    }
+    return;
+  }
+
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      audio: {
+        echoCancellation: false,
+        noiseSuppression: false,
+        autoGainControl: false
+      }
+    });
+
+    if (!homeAudioContext) {
+      homeAudioContext = new AudioContext();
+      homeAnalyser = homeAudioContext.createAnalyser();
+      homeAnalyser.fftSize = 1024;
+      homeAnalyser.smoothingTimeConstant = 0.55;
+      homeAudioData = new Uint8Array(homeAnalyser.fftSize);
+    }
+
+    const source = homeAudioContext.createMediaStreamSource(stream);
+    source.connect(homeAnalyser);
+
+    setHomeBlownState(false);
+    homeBaseline = 0;
+    cancelAnimationFrame(homeMonitoringFrameId);
+    monitorHomeBlow();
+
+    if (homeBlowStatus) {
+      homeBlowStatus.textContent = "Listening...";
+    }
+  } catch (error) {
+    if (homeBlowStatus) {
+      homeBlowStatus.textContent = "Mic denied";
+    }
+  }
+}
+
+if (enableHomeBlowBtn) {
+  enableHomeBlowBtn.addEventListener("click", enableHomeBlow);
 }
