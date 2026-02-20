@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bologna Album</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="simple-page">
+      <p class="page-link-wrap"><a class="page-link" href="memories.html">Back To Memories</a></p>
+      <section class="memory-sheet">
+        <p class="memory-kicker">Photo Album</p>
+        <h1>Bologna</h1>
+        <p class="memory-intro">thank you for having me over &lt;3</p>
+        <div class="album-slider" aria-label="Bologna slideshow">
+          <img class="album-slide is-active" src="bolognia/Bolonie.JPG" alt="Bologna photo 1" />
+          <img class="album-slide" src="bolognia/IMG_8831.JPG" alt="Bologna photo 3" />
+          <img class="album-slide" src="bolognia/IMG_8835.JPG" alt="Bologna photo 4" />
+          <img class="album-slide" src="bolognia/IMG_8838.JPG" alt="Bologna photo 5" />
+          <img class="album-slide" src="bolognia/IMG_8847.JPG" alt="Bologna photo 6" />
+          <img class="album-slide" src="bolognia/IMG_8858.JPG" alt="Bologna photo 7" />
+          <img class="album-slide" src="bolognia/IMG_8882.JPG" alt="Bologna photo 8" />
+          <img class="album-slide" src="bolognia/IMG_8891.JPG" alt="Bologna photo 9" />
+          <img class="album-slide" src="bolognia/IMG_8919.JPG" alt="Bologna photo 10" />
+          <img class="album-slide" src="bolognia/IMG_8932.JPG" alt="Bologna photo 11" />
+          <img class="album-slide" src="bolognia/IMG_8950.JPG" alt="Bologna photo 12" />
+          <img class="album-slide" src="bolognia/IMG_8953.JPG" alt="Bologna photo 13" />
+          <img class="album-slide" src="bolognia/IMG_8960.JPG" alt="Bologna photo 14" />
+          <img class="album-slide" src="bolognia/IMG_8963.JPG" alt="Bologna photo 15" />
+          <img class="album-slide" src="bolognia/IMG_8968.JPG" alt="Bologna photo 16" />
+          <img class="album-slide" src="bolognia/IMG_8976.JPG" alt="Bologna photo 17" />
+          <img class="album-slide" src="bolognia/IMG_8985.JPG" alt="Bologna photo 18" />
+          <img class="album-slide" src="bolognia/IMG_8991.JPG" alt="Bologna photo 19" />
+          <img class="album-slide" src="bolognia/IMG_9067.JPG" alt="Bologna photo 20" />
+          <img class="album-slide" src="bolognia/IMG_3001.JPG" alt="Bologna photo 2" />
+          <p id="album-counter" class="album-counter">1/20</p>
+          <button id="prev-slide" class="album-arrow album-arrow-left" type="button" aria-label="Previous slide">
+            &#8249;
+          </button>
+          <button id="next-slide" class="album-arrow album-arrow-right" type="button" aria-label="Next slide">
+            &#8250;
+          </button>
+        </div>
+        <div class="album-dots" aria-label="Slide indicators">
+          <button class="album-dot is-active" type="button" aria-label="Go to slide 1"></button>
+          <button class="album-dot" type="button" aria-label="Go to slide 2"></button>
+          <button class="album-dot" type="button" aria-label="Go to slide 3"></button>
+          <button class="album-dot" type="button" aria-label="Go to slide 4"></button>
+          <button class="album-dot" type="button" aria-label="Go to slide 5"></button>
+          <button class="album-dot" type="button" aria-label="Go to slide 6"></button>
+          <button class="album-dot" type="button" aria-label="Go to slide 7"></button>
+          <button class="album-dot" type="button" aria-label="Go to slide 8"></button>
+          <button class="album-dot" type="button" aria-label="Go to slide 9"></button>
+          <button class="album-dot" type="button" aria-label="Go to slide 10"></button>
+          <button class="album-dot" type="button" aria-label="Go to slide 11"></button>
+          <button class="album-dot" type="button" aria-label="Go to slide 12"></button>
+          <button class="album-dot" type="button" aria-label="Go to slide 13"></button>
+          <button class="album-dot" type="button" aria-label="Go to slide 14"></button>
+          <button class="album-dot" type="button" aria-label="Go to slide 15"></button>
+          <button class="album-dot" type="button" aria-label="Go to slide 16"></button>
+          <button class="album-dot" type="button" aria-label="Go to slide 17"></button>
+          <button class="album-dot" type="button" aria-label="Go to slide 18"></button>
+          <button class="album-dot" type="button" aria-label="Go to slide 19"></button>
+          <button class="album-dot" type="button" aria-label="Go to slide 20"></button>
+        </div>
+      </section>
+    </main>
+    <script>
+      const slides = Array.from(document.querySelectorAll(".album-slide"));
+      const prev = document.getElementById("prev-slide");
+      const next = document.getElementById("next-slide");
+      const dots = Array.from(document.querySelectorAll(".album-dot"));
+      const counter = document.getElementById("album-counter");
+      let current = 0;
+
+      function showSlide(index) {
+        slides[current].classList.remove("is-active");
+        dots[current].classList.remove("is-active");
+        current = (index + slides.length) % slides.length;
+        slides[current].classList.add("is-active");
+        dots[current].classList.add("is-active");
+        counter.textContent = `${current + 1}/20`;
+      }
+
+      prev.addEventListener("click", () => showSlide(current - 1));
+      next.addEventListener("click", () => showSlide(current + 1));
+      dots.forEach((dot, index) => {
+        dot.addEventListener("click", () => showSlide(index));
+      });
+    </script>
+  </body>
+</html>

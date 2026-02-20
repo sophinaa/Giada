@@ -607,6 +607,14 @@ h1 span {
   display: block;
 }
 
+.glasgow-photo-1 {
+  object-position: 30% 40%;
+}
+
+.grad-ball-middle {
+  object-position: center 30%;
+}
+
 .album-grid-random {
   grid-template-columns: 1.35fr 1fr;
   grid-auto-rows: 180px;
