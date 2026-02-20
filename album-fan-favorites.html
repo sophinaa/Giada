@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fan Favorites</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="simple-page">
+      <p class="page-link-wrap"><a class="page-link" href="memories.html">Back To Memories</a></p>
+      <section class="memory-sheet">
+        <p class="memory-kicker">Photo Album</p>
+        <h1>Fan Favorites</h1>
+        <p class="memory-intro">The only 2 picks that could make it.</p>
+        <div class="album-slider" aria-label="Fan favorites slideshow">
+          <img class="album-slide is-active" src="fanfaves.jpeg" alt="Fan favorite photo 1" />
+          <img class="album-slide" src="fanafves1.jpeg" alt="Fan favorite photo 2" />
+          <button id="prev-slide" class="album-arrow album-arrow-left" type="button" aria-label="Previous slide">
+            &#8249;
+          </button>
+          <button id="next-slide" class="album-arrow album-arrow-right" type="button" aria-label="Next slide">
+            &#8250;
+          </button>
+        </div>
+        <div class="album-dots" aria-label="Slide indicators">
+          <button class="album-dot is-active" type="button" aria-label="Go to slide 1"></button>
+          <button class="album-dot" type="button" aria-label="Go to slide 2"></button>
+        </div>
+      </section>
+    </main>
+    <script>
+      const slides = Array.from(document.querySelectorAll(".album-slide"));
+      const prev = document.getElementById("prev-slide");
+      const next = document.getElementById("next-slide");
+      const dots = Array.from(document.querySelectorAll(".album-dot"));
+      let current = 0;
+
+      function showSlide(index) {
+        slides[current].classList.remove("is-active");
+        dots[current].classList.remove("is-active");
+        current = (index + slides.length) % slides.length;
+        slides[current].classList.add("is-active");
+        dots[current].classList.add("is-active");
+      }
+
+      prev.addEventListener("click", () => showSlide(current - 1));
+      next.addEventListener("click", () => showSlide(current + 1));
+      dots.forEach((dot, index) => {
+        dot.addEventListener("click", () => showSlide(index));
+      });
+    </script>
+  </body>
+</html>
