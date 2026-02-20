@@ -607,6 +607,20 @@ h1 span {
   display: block;
 }
 
+.album-grid-random {
+  grid-template-columns: 1.35fr 1fr;
+  grid-auto-rows: 180px;
+}
+
+.random-photo-main {
+  grid-row: 1 / span 2;
+  height: 100%;
+}
+
+.random-photo-side {
+  height: 100%;
+}
+
 .album-slider {
   margin-top: 0.8rem;
   position: relative;
@@ -628,8 +642,20 @@ h1 span {
   transition: opacity 200ms ease;
 }
 
+.wagamama-slide-3 {
+  object-position: center 18%;
+}
+
+.wagamama-slide-5 {
+  object-position: center 42%;
+}
+
 .album-slide.is-active {
   opacity: 1;
+}
+
+.album-slider-graduation .album-slide {
+  object-position: center 24%;
 }
 
 .album-counter {
@@ -735,6 +761,16 @@ h1 span {
 }
 
 @media (max-width: 760px) {
+  .album-grid-random {
+    grid-template-columns: 1fr;
+    grid-auto-rows: auto;
+  }
+
+  .random-photo-main {
+    grid-row: auto;
+    height: 220px;
+  }
+
   .album-grid {
     grid-template-columns: 1fr;
   }

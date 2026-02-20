@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Graduation Album</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="simple-page">
+      <p class="page-link-wrap"><a class="page-link" href="memories.html">Back To Memories</a></p>
+      <section class="memory-sheet">
+        <p class="memory-kicker">Photo Album</p>
+        <h1>Graduation</h1>
+        <div class="album-slider album-slider-graduation" aria-label="Graduation slideshow">
+          <img class="album-slide is-active" src="grad/29d13916-2222-4d09-8592-0242d203bcc3.jpg" alt="Graduation photo 1" />
+          <img class="album-slide" src="grad/6e81c6da-4c65-4700-b422-023ba9932fec.jpg" alt="Graduation photo 2" />
+          <img class="album-slide" src="grad/IMG_5566.JPG" alt="Graduation photo 3" />
+          <img class="album-slide" src="grad/IMG_5569.JPG" alt="Graduation photo 4" />
+          <img class="album-slide" src="grad/IMG_5577.JPG" alt="Graduation photo 5" />
+          <img class="album-slide" src="grad/IMG_5578.JPG" alt="Graduation photo 6" />
+          <img class="album-slide" src="grad/IMG_5584.JPG" alt="Graduation photo 7" />
+          <img class="album-slide" src="grad/IMG_5590.JPG" alt="Graduation photo 8" />
+          <img class="album-slide" src="grad/IMG_5594.JPG" alt="Graduation photo 9" />
+          <p id="album-counter" class="album-counter">1/9</p>
+          <button id="prev-slide" class="album-arrow album-arrow-left" type="button" aria-label="Previous slide">
+            &#8249;
+          </button>
+          <button id="next-slide" class="album-arrow album-arrow-right" type="button" aria-label="Next slide">
+            &#8250;
+          </button>
+        </div>
+        <div class="album-dots" aria-label="Slide indicators">
+          <button class="album-dot is-active" type="button" aria-label="Go to slide 1"></button>
+          <button class="album-dot" type="button" aria-label="Go to slide 2"></button>
+          <button class="album-dot" type="button" aria-label="Go to slide 3"></button>
+          <button class="album-dot" type="button" aria-label="Go to slide 4"></button>
+          <button class="album-dot" type="button" aria-label="Go to slide 5"></button>
+          <button class="album-dot" type="button" aria-label="Go to slide 6"></button>
+          <button class="album-dot" type="button" aria-label="Go to slide 7"></button>
+          <button class="album-dot" type="button" aria-label="Go to slide 8"></button>
+          <button class="album-dot" type="button" aria-label="Go to slide 9"></button>
+        </div>
+      </section>
+    </main>
+    <script>
+      const slides = Array.from(document.querySelectorAll(".album-slide"));
+      const prev = document.getElementById("prev-slide");
+      const next = document.getElementById("next-slide");
+      const dots = Array.from(document.querySelectorAll(".album-dot"));
+      const counter = document.getElementById("album-counter");
+      let current = 0;
+
+      function showSlide(index) {
+        slides[current].classList.remove("is-active");
+        dots[current].classList.remove("is-active");
+        current = (index + slides.length) % slides.length;
+        slides[current].classList.add("is-active");
+        dots[current].classList.add("is-active");
+        counter.textContent = `${current + 1}/9`;
+      }
+
+      prev.addEventListener("click", () => showSlide(current - 1));
+      next.addEventListener("click", () => showSlide(current + 1));
+      dots.forEach((dot, index) => {
+        dot.addEventListener("click", () => showSlide(index));
+      });
+    </script>
+  </body>
+</html>
