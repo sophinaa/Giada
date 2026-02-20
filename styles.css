@@ -46,16 +46,32 @@ body {
   padding-right: 0.5rem;
 }
 
-.home-photo {
+.home-photo-wrap {
+  position: relative;
   width: min(980px, 90vw);
-  height: min(82vh, 900px);
   margin-top: 2.2rem;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.home-photo {
+  width: 100%;
+  height: auto;
   display: block;
+  object-fit: contain;
+  object-position: center;
+}
+
+.candle-overlay {
+  position: absolute;
+  top: 33%;
+  left: 59%;
+  transform: translateX(-50%);
+  width: 44%;
+  height: auto;
   object-fit: cover;
   object-position: center;
-  border-radius: 16px;
-  border: 1px solid rgba(18, 32, 22, 0.16);
-  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.16);
+  pointer-events: none;
 }
 
 .home-nav {
@@ -137,9 +153,18 @@ body {
   }
 
   .home-photo {
+    width: 100%;
+  }
+
+  .home-photo-wrap {
     width: min(560px, 96%);
-    height: auto;
     margin-top: 0.6rem;
+  }
+
+  .candle-overlay {
+    width: 52%;
+    top: 30%;
+    left: 58%;
   }
 
   .home-nav {
