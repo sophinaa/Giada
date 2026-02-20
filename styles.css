@@ -658,6 +658,14 @@ h1 span {
   object-position: center 24%;
 }
 
+.album-slider-graduation .graduation-slide-2 {
+  object-position: center 14%;
+}
+
+.album-slider-graduation .graduation-slide-3 {
+  object-position: center 8%;
+}
+
 .album-counter {
   position: absolute;
   top: 0.7rem;
