@@ -1,10 +1,14 @@
 const canvas = document.getElementById("confetti-canvas");
 const ctx = canvas.getContext("2d");
 const celebrateBtn = document.getElementById("celebrate-btn");
-const candlesWrap = document.getElementById("candles");
+const photoCakeWrap = document.getElementById("photo-cake-wrap");
+const cakePhoto = document.getElementById("cake-photo");
+const photoFlame = document.getElementById("photo-flame");
 const enableMicBtn = document.getElementById("enable-mic-btn");
 const relightBtn = document.getElementById("relight-btn");
 const micStatus = document.getElementById("mic-status");
+
+const CAKE_IMAGE_SRC = "cake.jpeg";
 
 let particles = [];
 let animationFrameId;
@@ -16,43 +20,81 @@ let monitoringFrameId;
 let blowBaseline = 0;
 let lastBlowAt = 0;
 
-const CANDLE_COUNT = 23;
 const BLOW_COOLDOWN_MS = 1500;
 const ABSOLUTE_BLOW_THRESHOLD = 0.11;
 const RELATIVE_BLOW_MULTIPLIER = 1.9;
 
-function createCandles() {
-  candlesWrap.innerHTML = "";
+function getFlames() {
+  return Array.from(document.querySelectorAll(".photo-flame"));
+}
 
-  for (let i = 0; i < CANDLE_COUNT; i += 1) {
-    const candle = document.createElement("div");
-    candle.className = "candle";
+function addRandomCandles(count = 5) {
+  const usedX = [50];
 
-    const flame = document.createElement("span");
-    flame.className = "flame";
+  for (let i = 0; i < count; i += 1) {
+    let x = 50;
+    let y = 19.5;
+    let attempts = 0;
 
-    candle.appendChild(flame);
-    candlesWrap.appendChild(candle);
+    while (attempts < 40) {
+      const nextX = 32 + Math.random() * 36;
+      const nextY = 18 + Math.random() * 4;
+      const farEnough = usedX.every((takenX) => Math.abs(takenX - nextX) > 5);
+
+      if (farEnough) {
+        x = nextX;
+        y = nextY;
+        break;
+      }
+
+      attempts += 1;
+    }
+
+    usedX.push(x);
+
+    const flame = document.createElement("div");
+    flame.className = "photo-flame";
+    flame.style.setProperty("--x", `${x}%`);
+    flame.style.setProperty("--y", `${y}%`);
+    photoCakeWrap.appendChild(flame);
   }
 }
 
-function getCandleElements() {
-  return Array.from(candlesWrap.querySelectorAll(".candle"));
+function nudgeLeftMostCandleDown(offset = 1.8) {
+  const flames = getFlames();
+  if (flames.length === 0) {
+    return;
+  }
+
+  let leftMost = flames[0];
+  let leftMostX = Number.parseFloat(leftMost.style.getPropertyValue("--x")) || 50;
+
+  flames.forEach((flame) => {
+    const x = Number.parseFloat(flame.style.getPropertyValue("--x")) || 50;
+    if (x < leftMostX) {
+      leftMost = flame;
+      leftMostX = x;
+    }
+  });
+
+  const currentY =
+    Number.parseFloat(leftMost.style.getPropertyValue("--y")) || 19.5;
+  leftMost.style.setProperty("--y", `${currentY + offset}%`);
 }
 
-function relightCandles() {
-  getCandleElements().forEach((candle) => candle.classList.remove("out"));
+function relightCandle() {
+  getFlames().forEach((flame) => flame.classList.remove("out"));
   micStatus.textContent = "Candles relit. Blow toward your mic.";
 }
 
-function blowOutCandles() {
-  getCandleElements().forEach((candle) => candle.classList.add("out"));
+function blowOutCandle() {
+  getFlames().forEach((flame) => flame.classList.add("out"));
   micStatus.textContent = "Wish made. Candles are out.";
   celebrate();
 }
 
-function hasLitCandles() {
-  return getCandleElements().some((candle) => !candle.classList.contains("out"));
+function hasLitCandle() {
+  return getFlames().some((flame) => !flame.classList.contains("out"));
 }
 
 function resizeCanvas() {
@@ -133,9 +175,9 @@ function monitorMic() {
   const isBurstAboveRoomNoise = level > blowBaseline * RELATIVE_BLOW_MULTIPLIER;
   const cooldownFinished = now - lastBlowAt > BLOW_COOLDOWN_MS;
 
-  if (isStrongEnough && isBurstAboveRoomNoise && cooldownFinished && hasLitCandles()) {
+  if (isStrongEnough && isBurstAboveRoomNoise && cooldownFinished && hasLitCandle()) {
     lastBlowAt = now;
-    blowOutCandles();
+    blowOutCandle();
   }
 
   monitoringFrameId = requestAnimationFrame(monitorMic);
@@ -147,7 +189,12 @@ async function enableMicMonitoring() {
     return;
   }
 
-  if (location.protocol !== "https:" && location.hostname !== "localhost") {
+  const isLocalHost =
+    location.hostname === "localhost" ||
+    location.hostname === "127.0.0.1" ||
+    location.hostname === "::1";
+
+  if (!window.isSecureContext && !isLocalHost) {
     micStatus.textContent = "Mic needs HTTPS (or localhost) to work.";
     return;
   }
@@ -185,8 +232,13 @@ async function enableMicMonitoring() {
 window.addEventListener("resize", resizeCanvas);
 celebrateBtn.addEventListener("click", celebrate);
 enableMicBtn.addEventListener("click", enableMicMonitoring);
-relightBtn.addEventListener("click", relightCandles);
+relightBtn.addEventListener("click", relightCandle);
+cakePhoto.addEventListener("error", () => {
+  micStatus.textContent = `Missing ${CAKE_IMAGE_SRC} in project root.`;
+});
 
-createCandles();
+cakePhoto.src = CAKE_IMAGE_SRC;
+addRandomCandles(5);
+nudgeLeftMostCandleDown();
 resizeCanvas();
 celebrate();
