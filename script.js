@@ -21,8 +21,9 @@ let blowBaseline = 0;
 let lastBlowAt = 0;
 
 const BLOW_COOLDOWN_MS = 1500;
-const ABSOLUTE_BLOW_THRESHOLD = 0.11;
-const RELATIVE_BLOW_MULTIPLIER = 1.9;
+const ABSOLUTE_RMS_THRESHOLD = 0.05;
+const ABSOLUTE_PEAK_THRESHOLD = 0.22;
+const RELATIVE_BLOW_MULTIPLIER = 1.45;
 
 function getFlames() {
   return Array.from(document.querySelectorAll(".photo-flame"));
@@ -33,12 +34,12 @@ function addRandomCandles(count = 5) {
 
   for (let i = 0; i < count; i += 1) {
     let x = 50;
-    let y = 19.5;
+    let y = 18.2;
     let attempts = 0;
 
     while (attempts < 40) {
       const nextX = 32 + Math.random() * 36;
-      const nextY = 18 + Math.random() * 4;
+      const nextY = 16.7 + Math.random() * 4;
       const farEnough = usedX.every((takenX) => Math.abs(takenX - nextX) > 5);
 
       if (farEnough) {
@@ -54,10 +55,67 @@ function addRandomCandles(count = 5) {
 
     const flame = document.createElement("div");
     flame.className = "photo-flame";
+    flame.dataset.row = "top";
     flame.style.setProperty("--x", `${x}%`);
     flame.style.setProperty("--y", `${y}%`);
     photoCakeWrap.appendChild(flame);
   }
+}
+
+function addLowerRowCandles(count = 4) {
+  const usedX = [];
+
+  for (let i = 0; i < count; i += 1) {
+    let x = 50;
+    let y = 25.2;
+    let attempts = 0;
+
+    while (attempts < 40) {
+      const nextX = 34 + Math.random() * 32;
+      const nextY = 23.5 + Math.random() * 3.2;
+      const farEnough = usedX.every((takenX) => Math.abs(takenX - nextX) > 6);
+
+      if (farEnough) {
+        x = nextX;
+        y = nextY;
+        break;
+      }
+
+      attempts += 1;
+    }
+
+    usedX.push(x);
+
+    const flame = document.createElement("div");
+    flame.className = "photo-flame";
+    flame.dataset.row = "bottom";
+    flame.style.setProperty("--x", `${x}%`);
+    flame.style.setProperty("--y", `${y}%`);
+    photoCakeWrap.appendChild(flame);
+  }
+}
+
+function removeLeftMostBottomCandle() {
+  const bottomFlames = Array.from(
+    document.querySelectorAll('.photo-flame[data-row="bottom"]')
+  );
+
+  if (bottomFlames.length === 0) {
+    return;
+  }
+
+  let leftMost = bottomFlames[0];
+  let leftMostX = Number.parseFloat(leftMost.style.getPropertyValue("--x")) || 50;
+
+  bottomFlames.forEach((flame) => {
+    const x = Number.parseFloat(flame.style.getPropertyValue("--x")) || 50;
+    if (x < leftMostX) {
+      leftMost = flame;
+      leftMostX = x;
+    }
+  });
+
+  leftMost.remove();
 }
 
 function nudgeLeftMostCandleDown(offset = 1.8) {
@@ -150,16 +208,24 @@ function celebrate() {
   draw();
 }
 
-function getAudioLevel() {
+function getAudioLevels() {
   analyser.getByteTimeDomainData(audioData);
   let sumSquares = 0;
+  let peak = 0;
 
   for (let i = 0; i < audioData.length; i += 1) {
     const normalized = (audioData[i] - 128) / 128;
     sumSquares += normalized * normalized;
+    const magnitude = Math.abs(normalized);
+    if (magnitude > peak) {
+      peak = magnitude;
+    }
   }
 
-  return Math.sqrt(sumSquares / audioData.length);
+  return {
+    rms: Math.sqrt(sumSquares / audioData.length),
+    peak
+  };
 }
 
 function monitorMic() {
@@ -167,12 +233,12 @@ function monitorMic() {
     return;
   }
 
-  const level = getAudioLevel();
-  blowBaseline = blowBaseline === 0 ? level : blowBaseline * 0.94 + level * 0.06;
+  const { rms, peak } = getAudioLevels();
+  blowBaseline = blowBaseline === 0 ? rms : blowBaseline * 0.9 + rms * 0.1;
 
   const now = Date.now();
-  const isStrongEnough = level > ABSOLUTE_BLOW_THRESHOLD;
-  const isBurstAboveRoomNoise = level > blowBaseline * RELATIVE_BLOW_MULTIPLIER;
+  const isStrongEnough = rms > ABSOLUTE_RMS_THRESHOLD || peak > ABSOLUTE_PEAK_THRESHOLD;
+  const isBurstAboveRoomNoise = rms > blowBaseline * RELATIVE_BLOW_MULTIPLIER;
   const cooldownFinished = now - lastBlowAt > BLOW_COOLDOWN_MS;
 
   if (isStrongEnough && isBurstAboveRoomNoise && cooldownFinished && hasLitCandle()) {
@@ -203,9 +269,9 @@ async function enableMicMonitoring() {
     if (!audioContext) {
       micStream = await navigator.mediaDevices.getUserMedia({
         audio: {
-          echoCancellation: true,
-          noiseSuppression: true,
-          autoGainControl: true
+          echoCancellation: false,
+          noiseSuppression: false,
+          autoGainControl: false
         }
       });
 
@@ -213,7 +279,7 @@ async function enableMicMonitoring() {
       const source = audioContext.createMediaStreamSource(micStream);
       analyser = audioContext.createAnalyser();
       analyser.fftSize = 1024;
-      analyser.smoothingTimeConstant = 0.85;
+      analyser.smoothingTimeConstant = 0.55;
       source.connect(analyser);
       audioData = new Uint8Array(analyser.fftSize);
     } else if (audioContext.state === "suspended") {
@@ -239,6 +305,8 @@ cakePhoto.addEventListener("error", () => {
 
 cakePhoto.src = CAKE_IMAGE_SRC;
 addRandomCandles(5);
+addLowerRowCandles(4);
+removeLeftMostBottomCandle();
 nudgeLeftMostCandleDown();
 resizeCanvas();
 celebrate();
