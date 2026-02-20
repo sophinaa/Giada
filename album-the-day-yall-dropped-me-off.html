@@ -15,50 +15,12 @@
       <section class="memory-sheet">
         <p class="memory-kicker">Photo Album</p>
         <h1>The day y'all dropped me off</h1>
-        <div class="album-slider" aria-label="The day y'all dropped me off slideshow">
-          <img class="album-slide is-active" src="27th.jpeg" alt="27th photo 1" />
-          <img class="album-slide" src="27th1.jpeg" alt="27th photo 2" />
-          <img class="album-slide" src="27th2.jpeg" alt="27th photo 3" />
-          <img class="album-slide" src="27th3.jpeg" alt="27th photo 4" />
-          <img class="album-slide" src="27th4.jpeg" alt="27th photo 5" />
-          <img class="album-slide" src="27th5.jpeg" alt="27th photo 6" />
-          <button id="prev-slide" class="album-arrow album-arrow-left" type="button" aria-label="Previous slide">
-            &#8249;
-          </button>
-          <button id="next-slide" class="album-arrow album-arrow-right" type="button" aria-label="Next slide">
-            &#8250;
-          </button>
-        </div>
-        <div class="album-dots" aria-label="Slide indicators">
-          <button class="album-dot is-active" type="button" aria-label="Go to slide 1"></button>
-          <button class="album-dot" type="button" aria-label="Go to slide 2"></button>
-          <button class="album-dot" type="button" aria-label="Go to slide 3"></button>
-          <button class="album-dot" type="button" aria-label="Go to slide 4"></button>
-          <button class="album-dot" type="button" aria-label="Go to slide 5"></button>
-          <button class="album-dot" type="button" aria-label="Go to slide 6"></button>
+        <p class="memory-intro">please follow this story carefully</p>
+        <div class="album-grid">
+          <img class="album-photo" src="27th.jpeg" alt="27th photo 1" />
+          <img class="album-photo" src="27th1.jpeg" alt="27th photo 2" />
         </div>
       </section>
     </main>
-    <script>
-      const slides = Array.from(document.querySelectorAll(".album-slide"));
-      const prev = document.getElementById("prev-slide");
-      const next = document.getElementById("next-slide");
-      const dots = Array.from(document.querySelectorAll(".album-dot"));
-      let current = 0;
-
-      function showSlide(index) {
-        slides[current].classList.remove("is-active");
-        dots[current].classList.remove("is-active");
-        current = (index + slides.length) % slides.length;
-        slides[current].classList.add("is-active");
-        dots[current].classList.add("is-active");
-      }
-
-      prev.addEventListener("click", () => showSlide(current - 1));
-      next.addEventListener("click", () => showSlide(current + 1));
-      dots.forEach((dot, index) => {
-        dot.addEventListener("click", () => showSlide(index));
-      });
-    </script>
   </body>
 </html>

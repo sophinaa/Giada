@@ -19,6 +19,7 @@
         <div class="album-slider" aria-label="Fan favorites slideshow">
           <img class="album-slide is-active" src="fanfaves.jpeg" alt="Fan favorite photo 1" />
           <img class="album-slide" src="fanafves1.jpeg" alt="Fan favorite photo 2" />
+          <p id="album-counter" class="album-counter">1/2</p>
           <button id="prev-slide" class="album-arrow album-arrow-left" type="button" aria-label="Previous slide">
             &#8249;
           </button>
@@ -37,6 +38,7 @@
       const prev = document.getElementById("prev-slide");
       const next = document.getElementById("next-slide");
       const dots = Array.from(document.querySelectorAll(".album-dot"));
+      const counter = document.getElementById("album-counter");
       let current = 0;
 
       function showSlide(index) {
@@ -45,6 +47,7 @@
         current = (index + slides.length) % slides.length;
         slides[current].classList.add("is-active");
         dots[current].classList.add("is-active");
+        counter.textContent = `${current + 1}/2`;
       }
 
       prev.addEventListener("click", () => showSlide(current - 1));

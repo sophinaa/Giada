@@ -632,6 +632,20 @@ h1 span {
   opacity: 1;
 }
 
+.album-counter {
+  position: absolute;
+  top: 0.7rem;
+  right: 0.7rem;
+  margin: 0;
+  padding: 0.24rem 0.5rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.55);
+  color: #122016;
+  font-weight: 800;
+  font-size: 0.82rem;
+  z-index: 2;
+}
+
 .album-arrow {
   position: absolute;
   top: 50%;

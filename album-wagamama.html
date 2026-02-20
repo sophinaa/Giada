@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Relics Album</title>
+    <title>Wagamama Album</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet" />
@@ -14,15 +14,18 @@
       <p class="page-link-wrap"><a class="page-link" href="memories.html">Back To Memories</a></p>
       <section class="memory-sheet">
         <p class="memory-kicker">Photo Album</p>
-        <h1>Relics</h1>
-        <p class="memory-intro">My favorite Japaneese baby &lt;3</p>
-        <div class="album-slider" aria-label="Relics slideshow">
-          <img class="album-slide is-active" src="baby.jpeg" alt="Relics photo 1" />
-          <img class="album-slide" src="baby1.jpeg" alt="Relics photo 2" />
-          <img class="album-slide" src="baby2.jpeg" alt="Relics photo 3" />
-          <img class="album-slide" src="baby3.jpeg" alt="Relics photo 4" />
-          <img class="album-slide" src="baby4.jpeg" alt="Relics photo 5" />
-          <p id="album-counter" class="album-counter">1/5</p>
+        <h1>Wagamama</h1>
+        <p class="memory-intro">and what came after</p>
+        <div class="album-slider" aria-label="Wagamama slideshow">
+          <img class="album-slide is-active" src="wagamama/IMG_2029.jpeg" alt="Wagamama photo 1" />
+          <img class="album-slide" src="wagamama/IMG_2031.jpeg" alt="Wagamama photo 2" />
+          <img class="album-slide" src="wagamama/IMG_2033.jpeg" alt="Wagamama photo 3" />
+          <img class="album-slide" src="wagamama/IMG_2036.jpeg" alt="Wagamama photo 4" />
+          <img class="album-slide" src="wagamama/IMG_2043.jpeg" alt="Wagamama photo 5" />
+          <img class="album-slide" src="wagamama/IMG_2054.jpeg" alt="Wagamama photo 6" />
+          <img class="album-slide" src="wagamama/IMG_2056.jpeg" alt="Wagamama photo 7" />
+          <img class="album-slide" src="wagamama/IMG_2066.jpeg" alt="Wagamama photo 8" />
+          <p id="album-counter" class="album-counter">1/8</p>
           <button id="prev-slide" class="album-arrow album-arrow-left" type="button" aria-label="Previous slide">
             &#8249;
           </button>
@@ -36,6 +39,9 @@
           <button class="album-dot" type="button" aria-label="Go to slide 3"></button>
           <button class="album-dot" type="button" aria-label="Go to slide 4"></button>
           <button class="album-dot" type="button" aria-label="Go to slide 5"></button>
+          <button class="album-dot" type="button" aria-label="Go to slide 6"></button>
+          <button class="album-dot" type="button" aria-label="Go to slide 7"></button>
+          <button class="album-dot" type="button" aria-label="Go to slide 8"></button>
         </div>
       </section>
     </main>
@@ -53,7 +59,7 @@
         current = (index + slides.length) % slides.length;
         slides[current].classList.add("is-active");
         dots[current].classList.add("is-active");
-        counter.textContent = `${current + 1}/5`;
+        counter.textContent = `${current + 1}/8`;
       }
 
       prev.addEventListener("click", () => showSlide(current - 1));

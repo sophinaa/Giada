@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Relics Album</title>
+    <title>Walks Album</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet" />
@@ -14,15 +14,13 @@
       <p class="page-link-wrap"><a class="page-link" href="memories.html">Back To Memories</a></p>
       <section class="memory-sheet">
         <p class="memory-kicker">Photo Album</p>
-        <h1>Relics</h1>
-        <p class="memory-intro">My favorite Japaneese baby &lt;3</p>
-        <div class="album-slider" aria-label="Relics slideshow">
-          <img class="album-slide is-active" src="baby.jpeg" alt="Relics photo 1" />
-          <img class="album-slide" src="baby1.jpeg" alt="Relics photo 2" />
-          <img class="album-slide" src="baby2.jpeg" alt="Relics photo 3" />
-          <img class="album-slide" src="baby3.jpeg" alt="Relics photo 4" />
-          <img class="album-slide" src="baby4.jpeg" alt="Relics photo 5" />
-          <p id="album-counter" class="album-counter">1/5</p>
+        <h1>Walks</h1>
+        <p class="memory-intro">I NEED TO GO ON A WALK</p>
+        <p class="memory-intro">we need to do it again</p>
+        <div class="album-slider" aria-label="Walks slideshow">
+          <img class="album-slide is-active" src="walks.jpeg" alt="Walks photo 1" />
+          <img class="album-slide" src="walks1.jpeg" alt="Walks photo 2" />
+          <p id="album-counter" class="album-counter">1/2</p>
           <button id="prev-slide" class="album-arrow album-arrow-left" type="button" aria-label="Previous slide">
             &#8249;
           </button>
@@ -33,9 +31,6 @@
         <div class="album-dots" aria-label="Slide indicators">
           <button class="album-dot is-active" type="button" aria-label="Go to slide 1"></button>
           <button class="album-dot" type="button" aria-label="Go to slide 2"></button>
-          <button class="album-dot" type="button" aria-label="Go to slide 3"></button>
-          <button class="album-dot" type="button" aria-label="Go to slide 4"></button>
-          <button class="album-dot" type="button" aria-label="Go to slide 5"></button>
         </div>
       </section>
     </main>
@@ -53,7 +48,7 @@
         current = (index + slides.length) % slides.length;
         slides[current].classList.add("is-active");
         dots[current].classList.add("is-active");
-        counter.textContent = `${current + 1}/5`;
+        counter.textContent = `${current + 1}/2`;
       }
 
       prev.addEventListener("click", () => showSlide(current - 1));
