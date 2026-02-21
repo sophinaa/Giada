@@ -13,6 +13,10 @@ const unlitOverlay = document.getElementById("unlit-overlay");
 const enableHomeBlowBtn = document.getElementById("enable-home-blow-btn");
 const disableHomeBlowBtn = document.getElementById("disable-home-blow-btn");
 const homeBlowStatus = document.getElementById("home-blow-status");
+const messageCard = document.getElementById("message-card");
+const messageFullscreenBtn = document.getElementById("message-fullscreen-btn");
+const messageModal = document.getElementById("message-modal");
+const messageModalCloseBtn = document.getElementById("message-modal-close-btn");
 
 const CAKE_IMAGE_SRC = "cake.jpeg";
 
@@ -525,4 +529,37 @@ if (enableHomeBlowBtn) {
 
 if (disableHomeBlowBtn) {
   disableHomeBlowBtn.addEventListener("click", disableHomeBlow);
+}
+
+function setMessageCardFullscreen(enabled) {
+  document.body.classList.toggle("message-modal-open", enabled);
+  if (messageModal) {
+    messageModal.hidden = !enabled;
+  }
+  if (messageFullscreenBtn) {
+    messageFullscreenBtn.textContent = enabled ? "Exit Full Screen" : "Full Screen";
+  }
+}
+
+if (messageCard && messageFullscreenBtn && messageModal) {
+  messageFullscreenBtn.addEventListener("click", () => {
+    const isFullscreen = document.body.classList.contains("message-modal-open");
+    setMessageCardFullscreen(!isFullscreen);
+  });
+
+  if (messageModalCloseBtn) {
+    messageModalCloseBtn.addEventListener("click", () => setMessageCardFullscreen(false));
+  }
+
+  messageModal.addEventListener("click", (event) => {
+    if (event.target === messageModal) {
+      setMessageCardFullscreen(false);
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && document.body.classList.contains("message-modal-open")) {
+      setMessageCardFullscreen(false);
+    }
+  });
 }
