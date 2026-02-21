@@ -711,6 +711,23 @@ body.message-modal-open {
   line-height: 1.6;
 }
 
+.newsletter-item p + p {
+  margin-top: 0.85rem;
+}
+
+.newsletter-headline-text {
+  text-transform: uppercase;
+  font-size: 1.3rem;
+  letter-spacing: 0.02em;
+  font-weight: 700;
+  color: #122016;
+  text-align: center;
+}
+
+.newsletter-editor-note {
+  font-size: 0.92rem;
+}
+
 .memory-sheet {
   max-width: 76ch;
   background: rgba(255, 255, 255, 0.86);
