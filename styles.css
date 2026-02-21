@@ -343,6 +343,14 @@ h1 span {
   font-size: 0.78rem;
 }
 
+.card-label-note {
+  grid-column: 1 / -1;
+  justify-self: end;
+  margin: -0.1rem 0 0.45rem;
+  font-size: 0.8rem;
+  color: rgba(18, 32, 22, 0.62);
+}
+
 .card {
   background: var(--card);
   border: 1px solid rgba(45, 106, 79, 0.2);
@@ -443,8 +451,8 @@ body.message-modal-open {
   width: clamp(120px, 18vw, 210px);
   height: auto;
   border-radius: 10px;
-  border: 1px solid rgba(45, 106, 79, 0.22);
   object-fit: cover;
+  clip-path: inset(14% 4% 4% 4% round 10px);
 }
 
 .toast {
