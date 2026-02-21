@@ -107,6 +107,13 @@ body {
   text-align: center;
 }
 
+.home-nav-subtitle {
+  margin: -0.2rem 0 0.75rem;
+  text-align: center;
+  font-size: 0.84rem;
+  opacity: 0.78;
+}
+
 .home-nav-link {
   display: block;
   color: #122016;
@@ -143,8 +150,19 @@ body {
 }
 
 .home-nav-btn-muted {
-  background: #3f8f68;
+  background: transparent;
+  color: rgba(18, 32, 22, 0.62);
+  box-shadow: none;
+  border: 0;
+  font-weight: 600;
+  font-size: 0.82rem;
+  text-decoration: underline;
   margin-top: 0.35rem;
+}
+
+.home-nav-btn-muted:hover {
+  background: transparent;
+  color: rgba(18, 32, 22, 0.82);
 }
 
 .home-nav-status {
