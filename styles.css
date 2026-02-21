@@ -292,6 +292,18 @@ h1 span {
   margin: 0 auto;
 }
 
+.hero-note {
+  margin: 0.1rem auto 0.8rem;
+  font-size: 0.95rem;
+  opacity: 0.82;
+}
+
+.hero h1 {
+  white-space: nowrap;
+  max-width: none;
+  font-size: clamp(2rem, 5.2vw, 4.2rem);
+}
+
 #celebrate-btn {
   margin-top: 1.8rem;
   border: 0;
